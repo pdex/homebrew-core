@@ -5,11 +5,10 @@ class Agda < Formula
 
   desc "Dependently typed functional programming language"
   homepage "http://wiki.portal.chalmers.se/agda/"
-  revision 1
 
   stable do
-    url "https://github.com/agda/agda/archive/2.5.1.tar.gz"
-    sha256 "7d80e22710ab9d7fb6ecf9366ea6df6e9a5881008c32dd349df06e9a2f203e40"
+    url "https://github.com/agda/agda/archive/v2.5.1.1.tar.gz"
+    sha256 "a0e23cbbcfd5a7e182d52efb9302c1c35085594fa650234806f6b0d90c7fe8d8"
 
     resource "stdlib" do
       url "https://github.com/agda/agda-stdlib/archive/v0.12.tar.gz"
@@ -18,9 +17,10 @@ class Agda < Formula
   end
 
   bottle do
-    sha256 "f4bf0f777cc375c8659eba82062ef4bb1d8b83f64b2fb62ba787dffe23a80e3a" => :el_capitan
-    sha256 "f4124bf1dac0dae0daaed79d79b4fc32701b29baabaf58345d33d80a95a2151c" => :yosemite
-    sha256 "cb7a3700dd35a28255e4311866ab1a8ca74c5bb2540d44cf37a190a77e3c00b3" => :mavericks
+    revision 1
+    sha256 "da0d064f704833f7594a2ece28d5aec82fdda17105d8059c955dd8e5f523270a" => :el_capitan
+    sha256 "4898eb5092dea5fb56a4c65cae2ff9eada1026f05901bb3056425b786dbb7d1e" => :yosemite
+    sha256 "c7a55550e0e9f4a440ceaa9a3348334a1eb792e3b9eb25e13d8dec643c06dab3" => :mavericks
   end
 
   head do
@@ -44,8 +44,7 @@ class Agda < Formula
     depends_on "cabal-install" => :build
   end
 
-  depends_on "gmp"
-  depends_on :emacs => ["21.1", :recommended]
+  depends_on :emacs => ["23.4", :recommended]
 
   def install
     # install Agda core

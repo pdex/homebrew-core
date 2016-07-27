@@ -1,7 +1,7 @@
 class A2ps < Formula
   desc "Any-to-PostScript filter"
   homepage "https://www.gnu.org/software/a2ps/"
-  url "http://ftpmirror.gnu.org/a2ps/a2ps-4.14.tar.gz"
+  url "https://ftpmirror.gnu.org/a2ps/a2ps-4.14.tar.gz"
   mirror "https://ftp.gnu.org/gnu/a2ps/a2ps-4.14.tar.gz"
   sha256 "f3ae8d3d4564a41b6e2a21f237d2f2b104f48108591e8b83497500182a3ab3a4"
 
@@ -29,13 +29,13 @@ class A2ps < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--sysconfdir=#{etc}",
-                          "--with-lispdir=#{share}/emacs/site-lisp/#{name}"
+                          "--with-lispdir=#{elisp}"
     system "make", "install"
   end
 
   test do
     (testpath/"test.txt").write("Hello World!\n")
-    system "#{bin}/a2ps", "test.txt", "-o", "test.ps"
+    system bin/"a2ps", "test.txt", "-o", "test.ps"
     assert File.read("test.ps").start_with?("")
   end
 end

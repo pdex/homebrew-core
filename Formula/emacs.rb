@@ -1,7 +1,7 @@
 class Emacs < Formula
   desc "GNU Emacs text editor"
   homepage "https://www.gnu.org/software/emacs/"
-  url "http://ftpmirror.gnu.org/emacs/emacs-24.5.tar.xz"
+  url "https://ftpmirror.gnu.org/emacs/emacs-24.5.tar.xz"
   mirror "https://ftp.gnu.org/gnu/emacs/emacs-24.5.tar.xz"
   sha256 "dd47d71dd2a526cf6b47cb49af793ec2e26af69a0951cc40e43ae290eacfc34e"
 
@@ -13,16 +13,21 @@ class Emacs < Formula
   end
 
   devel do
-    url "http://alpha.gnu.org/gnu/emacs/pretest/emacs-25.0.94.tar.xz"
-    sha256 "c9c45ea7e044585f5b35500edbb356c3a2f4547d441d0d23a5e76722794c6da6"
+    url "http://alpha.gnu.org/gnu/emacs/pretest/emacs-25.1-rc1.tar.xz"
+    version "25.1-rc1"
+    sha256 "c00c50e66474359d1e24baa2a0703bc64207caffc31d0808d8b4ffa4b3826133"
+
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "jpeg" => :linked
   end
 
   head do
     url "https://github.com/emacs-mirror/emacs.git"
+
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "jpeg" => :linked
   end
 
   option "with-cocoa", "Build a Cocoa version of emacs"

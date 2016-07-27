@@ -6,17 +6,22 @@ class Ghc < Formula
 
   bottle do
     cellar :any
-    sha256 "950b8ce79292f62f01327d7dbec598187ee5f26360c1393b6de56a4bc3dc237d" => :el_capitan
-    sha256 "6ed36065af3ee25688d104bd1b15be7a8e531a31af0d375f4b8b5b331a13de98" => :yosemite
-    sha256 "ea383499e518fa6ac12f472ae3e245eebec9ab6b7c4ad2396a61911d8c1f58c5" => :mavericks
+    revision 1
+    sha256 "210f5b5e8d223cc58689289e651fc6f2a3a9276e08a97eb8b9e2ea73e37718c5" => :el_capitan
+    sha256 "854bec85cc5fb00ea0b9dd22d260294f4d2927fcee962d2c3b6804765f012f52" => :yosemite
+    sha256 "d7ac762642463f397ec2edb5cde43b6f573293474fd989ac7f49aaa1e0d8f25e" => :mavericks
   end
 
   option "with-test", "Verify the build using the testsuite"
+  option "without-docs", "Do not build documentation (including man page)"
   deprecated_option "tests" => "with-test"
   deprecated_option "with-tests" => "with-test"
 
+  depends_on :macos => :lion
+  depends_on "sphinx-doc" => :build if build.with? "docs"
+
   resource "gmp" do
-    url "http://ftpmirror.gnu.org/gmp/gmp-6.1.0.tar.bz2"
+    url "https://ftpmirror.gnu.org/gmp/gmp-6.1.0.tar.bz2"
     mirror "https://gmplib.org/download/gmp/gmp-6.1.0.tar.bz2"
     mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.1.0.tar.bz2"
     sha256 "498449a994efeba527885c10405993427995d3f86b8768d8cdf8d9dd7c6b73e8"
@@ -33,19 +38,25 @@ class Ghc < Formula
     end
   end
 
+  # https://www.haskell.org/ghc/download_ghc_8_0_1#macosx_x86_64
+  # "This is a distribution for Mac OS X, 10.7 or later."
   resource "binary" do
-    if MacOS.version <= :lion
-      url "https://downloads.haskell.org/~ghc/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2"
-      sha256 "f7a35bea69b6cae798c5f603471a53b43c4cc5feeeeb71733815db6e0a280945"
-    else
-      url "https://downloads.haskell.org/~ghc/8.0.1/ghc-8.0.1-x86_64-apple-darwin.tar.xz"
-      sha256 "06ec33056b927da5e68055147f165f873088f6812fe0c642c4c78c9a449fbc42"
-    end
+    url "https://downloads.haskell.org/~ghc/8.0.1/ghc-8.0.1-x86_64-apple-darwin.tar.xz"
+    sha256 "06ec33056b927da5e68055147f165f873088f6812fe0c642c4c78c9a449fbc42"
   end
 
   resource "testsuite" do
     url "https://downloads.haskell.org/~ghc/8.0.1/ghc-8.0.1-testsuite.tar.xz"
     sha256 "bc57163656ece462ef61072559d491b72c5cdd694f3c39b80ac0f6b9a3dc8151"
+  end
+
+  # fix clock_gettime support on 10.12
+  # https://ghc.haskell.org/trac/ghc/ticket/12195
+  if MacOS.version >= :sierra
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/9eef46168ca5daa1629082af5532fc4b521d1a8d/ghc/clock_gettime.patch"
+      sha256 "42444b381840d9d90202ff619f0070c28a753243af5d7e6b60efd227c6cf308c"
+    end
   end
 
   def install

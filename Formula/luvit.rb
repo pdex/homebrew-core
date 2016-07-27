@@ -1,15 +1,15 @@
 class Luvit < Formula
   desc "Asynchronous I/O for Lua"
   homepage "https://luvit.io"
-  url "https://github.com/luvit/luvit/archive/2.7.2.tar.gz"
-  sha256 "b26e637f02bf37edbbe3c5e6ccdb058cb6e0ceca8ead0c8878cf20764803421c"
+  url "https://github.com/luvit/luvit/archive/2.11.5.tar.gz"
+  sha256 "953fceb4980eafe16f54d1316f12baac9f1ed913764fed28c3f178cceb026046"
   head "https://github.com/luvit/luvit.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e2955d510e4014b8ce9d95ba67649ea2d355eba4d1cf1ef06430806d6b69bf03" => :el_capitan
-    sha256 "f3e4cc67fd94b97cbc4bc7f73fad4ceb5567f7b36367b4596196beb63eade8c4" => :yosemite
-    sha256 "b4026e5ef8fb466e6e266ead2967902b90fbdad5930259df9867a3bf6f48ec38" => :mavericks
+    sha256 "728882f240f666b5b04458206af37e4e84d9d656c8918c657f61b4fcb1d29188" => :el_capitan
+    sha256 "7dd6c06c1bec92c22d957663a27ece45eb9ce10edb11a4c1f87ba8a78f245b56" => :yosemite
+    sha256 "66ad68f41d253bab1197f1b8445e254ae587ded4a5d0b9af554b55d4a7179c34" => :mavericks
   end
 
   depends_on "pkg-config" => :build

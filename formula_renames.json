@@ -2,6 +2,7 @@
   "app-engine-java-sdk": "app-engine-java",
   "beanstalk": "beanstalkd",
   "letsencrypt": "certbot",
+  "commonmark": "cmark",
   "cppformat": "fmt",
   "crystal": "autocode",
   "cv": "progress",
@@ -22,5 +23,6 @@
   "offline-imap": "offlineimap",
   "plt-racket": "racket",
   "polarssl": "mbedtls",
-  "screenbrightness": "brightness"
+  "screenbrightness": "brightness",
+  "wires": "geckodriver"
 }

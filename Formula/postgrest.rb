@@ -6,33 +6,14 @@ class Postgrest < Formula
 
   desc "Serves a fully RESTful API from any existing PostgreSQL database"
   homepage "https://github.com/begriffs/postgrest"
-  revision 3
-
-  stable do
-    url "https://github.com/begriffs/postgrest/archive/v0.3.1.1.tar.gz"
-    sha256 "1830900175879d4be40b93410a7617cb637aae7e9e70792bf70e2bf72b0b2150"
-
-    # Upstream postgrest PR bumping the constraints for bytestring-tree-builder,
-    # hasql-transaction, and postgresql-binary, so that we no longer have to
-    # patch any of those; https://github.com/begriffs/postgrest/pull/619 doesn't
-    # apply cleanly to the tagged release, so using an equivalent patch :DATA
-    patch :DATA
-  end
+  url "https://github.com/begriffs/postgrest/archive/v0.3.2.0.tar.gz"
+  sha256 "1cedceb22f051d4d80a75e4ac7a875164e3ee15bd6f6edc68dfca7c9265a2481"
+  head "https://github.com/begriffs/postgrest.git"
 
   bottle do
-    sha256 "3e1e6f8ba867ea149374b712c75a97cee87281ef2cb1c96c780efc59dbf6f5fb" => :el_capitan
-    sha256 "b8b506f74214d00cf4741a1ec65651a9cc6fa88d5156e2f9aa97caab60c57deb" => :yosemite
-    sha256 "e2d4bc81c1d9dfd43d11b57bc7224684f0d60f89737041b2fdc74f27cb3ae78c" => :mavericks
-  end
-
-  head do
-    url "https://github.com/begriffs/postgrest.git"
-
-    # Equivalent to the patch :DATA for stable above
-    patch do
-      url "https://github.com/begriffs/postgrest/pull/619.patch"
-      sha256 "e98e5bad88a62d33ab2a7dfda88c1b34315231d27179cc708b959468c1a20191"
-    end
+    sha256 "a6315f312795298dca7bb58b8b671020e52db78f7f60c85a80647f2af0ef5ba5" => :el_capitan
+    sha256 "f775adbb96f422903e41af81d5277dcbd6497197308fe26abce04e574d7778d1" => :yosemite
+    sha256 "f245755397ec6c1718f989f3df8cb6a5b0e6d3ae821304954d51c22050f58e6e" => :mavericks
   end
 
   depends_on "ghc" => :build
@@ -75,34 +56,3 @@ class Postgrest < Formula
     end
   end
 end
-
-__END__
-diff --git a/postgrest.cabal b/postgrest.cabal
-index 0b32e03..abcc078 100644
---- a/postgrest.cabal
-+++ b/postgrest.cabal
-@@ -29,6 +29,7 @@ executable postgrest
-   build-depends:       aeson (>= 0.8 && < 0.10) || (>= 0.11 && < 0.12)
-                      , base >= 4.8 && < 5
-                      , bytestring
-+                     , bytestring-tree-builder == 0.2.7
-                      , case-insensitive
-                      , cassava
-                      , containers
-@@ -36,7 +37,7 @@ executable postgrest
-                      , errors
-                      , hasql >= 0.19.9 && < 0.20
-                      , hasql-pool >= 0.4 && < 0.5
--                     , hasql-transaction >= 0.4.3 && < 0.5
-+                     , hasql-transaction == 0.4.5
-                      , http-types
-                      , interpolatedstring-perl6
-                      , jwt
-@@ -46,6 +47,7 @@ executable postgrest
-                      , optparse-applicative >= 0.11 && < 0.13
-                      , parsec
-                      , postgrest
-+                     , postgresql-binary == 0.9.0.1
-                      , regex-tdfa
-                      , safe >= 0.3 && < 0.4
-                      , scientific

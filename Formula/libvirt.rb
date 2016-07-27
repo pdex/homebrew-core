@@ -1,13 +1,13 @@
 class Libvirt < Formula
   desc "C virtualization API"
   homepage "https://www.libvirt.org"
-  url "https://libvirt.org/sources/libvirt-1.3.4.tar.gz"
-  sha256 "e2396ebebb3f3fdb50429ce8faa99559f6e8e3cc0493d5fa0c1999db189c25bd"
+  url "https://libvirt.org/sources/libvirt-2.0.0.tar.xz"
+  sha256 "10e90af55e613953c0ddc60b4ac3a10c73c0f3493d7014259e3f012b2ffc9acb"
 
   bottle do
-    sha256 "ddf44ea39669e5385ab669cccdf83da9085a9e1dfe690b0e402d334440cb3243" => :el_capitan
-    sha256 "aff8939d5b19080cc5b95bd5baead8f05bb2c807e6f7e6b3520474fbe08494b5" => :yosemite
-    sha256 "1a2775e24fe299eb67b869656e05fb5ae6f76749f7c42f3bb20ff2ebfcdddffd" => :mavericks
+    sha256 "7acc4fefda57345d86297de6bfd267f5abcbc902daf4b976fc45807525ec5440" => :el_capitan
+    sha256 "8d26242b5803553bff45752d5df616be38efe6be902a937fc319a09ef47f1968" => :yosemite
+    sha256 "cef64589bd74610e97526c7e9f0c1178fd30bfbda26e7b0db393579f8271e759" => :mavericks
   end
 
   option "without-libvirtd", "Build only the virsh client and development libraries"
@@ -28,19 +28,25 @@ class Libvirt < Formula
     cause "Undefined symbols when linking"
   end
 
+  # Fixes compile failure.  Will be in next upstream release:
+  #  https://www.redhat.com/archives/libvir-list/2016-July/msg00815.html
+  patch :p1, :DATA
+
   def install
-    args = ["--prefix=#{prefix}",
-            "--localstatedir=#{var}",
-            "--mandir=#{man}",
-            "--sysconfdir=#{etc}",
-            "--with-esx",
-            "--with-init-script=none",
-            "--with-remote",
-            "--with-test",
-            "--with-vbox",
-            "--with-vmware",
-            "--with-yajl",
-            "--without-qemu"]
+    args = %W[
+      --prefix=#{prefix}
+      --localstatedir=#{var}
+      --mandir=#{man}
+      --sysconfdir=#{etc}
+      --with-esx
+      --with-init-script=none
+      --with-remote
+      --with-test
+      --with-vbox
+      --with-vmware
+      --with-yajl
+      --without-qemu
+    ]
 
     args << "--without-libvirtd" if build.without? "libvirtd"
 
@@ -51,9 +57,7 @@ class Libvirt < Formula
     system "make", "install"
 
     # Update the SASL config file with the Homebrew prefix
-    inreplace "#{etc}/sasl2/libvirt.conf" do |s|
-      s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
-    end
+    inreplace "#{etc}/sasl2/libvirt.conf", "/etc/", "#{HOMEBREW_PREFIX}/etc/"
 
     # If the libvirt daemon is built, update its config file to reflect
     # the Homebrew prefix
@@ -64,4 +68,26 @@ class Libvirt < Formula
       end
     end
   end
+
+  test do
+    output = shell_output("#{bin}/virsh -v")
+    assert_match version.to_s, output
+  end
 end
+
+__END__
+diff --git a/src/util/virsystemd.c b/src/util/virsystemd.c
+index 969cd68..7d6985b 100644
+--- a/src/util/virsystemd.c
++++ b/src/util/virsystemd.c
+@@ -41,6 +41,10 @@
+
+ VIR_LOG_INIT("util.systemd");
+
++#ifndef MSG_NOSIGNAL
++# define MSG_NOSIGNAL 0
++#endif
++
+ static void virSystemdEscapeName(virBufferPtr buf,
+                                  const char *name)
+ {

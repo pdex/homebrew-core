@@ -5,15 +5,26 @@ class GitAnnex < Formula
 
   desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-6.20160527/git-annex-6.20160527.tar.gz"
-  sha256 "9482a13acd8b6c4cbe4f354243726e94689d0b3f516eabfbc78900e94ad67924"
   head "git://git-annex.branchable.com/"
+
+  stable do
+    url "https://hackage.haskell.org/package/git-annex-6.20160619/git-annex-6.20160619.tar.gz"
+    sha256 "5acc80dfb86d8f568819256a428f04794bff4c654389692f27a7bf0877ebe12f"
+
+    # Upstream commit "cabal constraints for aws and esqueleto"
+    # Upstream aws issue: https://github.com/aristidb/aws/issues/206
+    # Upstream esqueleto issue: https://github.com/prowdsponsor/esqueleto/issues/137
+    patch do
+      url "https://github.com/joeyh/git-annex/commit/18e458db.patch"
+      sha256 "75c3f7426e492ea48062f9922badae5c7809f2494f128e41f9d3e148fb9daa50"
+    end
+  end
 
   bottle do
     cellar :any
-    sha256 "537bebf158d07fdef85488e65ba175eaf135de07b791f5508eb4da69b3502af6" => :el_capitan
-    sha256 "c45bbdc47b17cd57af046d84c9f5214f74da5b0796eeaf0f5708bb69903a6b4a" => :yosemite
-    sha256 "42a9965ad1feb12d9db0d51cd222cf4c2f2700270771c642d5e99ea0ee4045cd" => :mavericks
+    sha256 "9627ba509decc32a187afcc3fda6dcab2974db69a3c04e5005dde9bd3eae88ba" => :el_capitan
+    sha256 "73f8961b8fd9a93e871dd1ff1379f63d3c78ee239782d1ffe79e7a4749779b4b" => :yosemite
+    sha256 "33d9184557f8d18fb772310b75ec8ec797b86d96240627cac49931ac4453713e" => :mavericks
   end
 
   option "with-git-union-merge", "Build the git-union-merge tool"

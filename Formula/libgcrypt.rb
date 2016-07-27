@@ -1,16 +1,16 @@
 class Libgcrypt < Formula
   desc "Cryptographic library based on the code from GnuPG"
   homepage "https://directory.fsf.org/wiki/Libgcrypt"
-  url "https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.7.0.tar.bz2"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.0.tar.bz2"
-  sha256 "b0e67ea74474939913c4d9d9ef4ef5ec378efbe2bebe36389dee319c79bffa92"
+  url "https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.7.2.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.2.tar.bz2"
+  sha256 "3d35df906d6eab354504c05d749a9b021944cb29ff5f65c8ef9c3dd5f7b6689f"
   revision 1
 
   bottle do
     cellar :any
-    sha256 "0a413db08292c2963dc76ea5ace51084d6496ea238da65c58329b677f5c4a147" => :el_capitan
-    sha256 "64ab4e6aa2e8bef022ee0884c4f2ec19c36a54fc77072d6f3e9baf1fd1d47c92" => :yosemite
-    sha256 "80ae9b194176f762028bc2a952b2ac11ba06bbf287d12b0f98562bf11b81fbfd" => :mavericks
+    sha256 "506dba4480759340c8086178ad7c82a27ab0388c7ff679a1f53c742c271acffa" => :el_capitan
+    sha256 "4cc2302042335a0c2e849b200f8410e8dc5c3ee4a51fc705c1b03853d6215a92" => :yosemite
+    sha256 "d18641e490bf7c7e7b158aab67ae2e5dc84383c3e436d436864f7500bf842b2c" => :mavericks
   end
 
   option :universal
@@ -39,12 +39,19 @@ class Libgcrypt < Formula
 
     # Parallel builds work, but only when run as separate steps
     system "make"
-    system "make", "install"
-    # Make check currently dies on El Capitan
-    # https://github.com/Homebrew/homebrew/issues/41599
+    # Slightly hideous hack to help `make check` work in
+    # normal place on >10.10 where SIP is enabled.
+    # https://github.com/Homebrew/homebrew-core/pull/3004
     # https://bugs.gnupg.org/gnupg/issue2056
-    # This check should be above make install again when fixed.
+    system "install_name_tool", "-change",
+                                lib/"libgcrypt.20.dylib",
+                                buildpath/"src/.libs/libgcrypt.20.dylib",
+                                buildpath/"tests/.libs/random"
     system "make", "check"
+    system "make", "install"
+
+    # avoid triggering mandatory rebuilds of software that hard-codes this path
+    inreplace bin/"libgcrypt-config", prefix, opt_prefix
   end
 
   test do

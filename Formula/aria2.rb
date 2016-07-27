@@ -1,14 +1,14 @@
 class Aria2 < Formula
   desc "Download with resuming and segmented downloading"
   homepage "https://aria2.github.io/"
-  url "https://github.com/aria2/aria2/releases/download/release-1.23.0/aria2-1.23.0.tar.xz"
-  sha256 "585185866415bf1120e4bf0a484e7dfec2e9e7c5305023b15ad0f66f90391f93"
+  url "https://github.com/aria2/aria2/releases/download/release-1.25.0/aria2-1.25.0.tar.xz"
+  sha256 "ff89eb4c76cfc816a6f5abc7dfd416cc3f339e7d02c761f822fa965a18cf0d35"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2414af6389422db8587a4dd286a99168407024e35a7871ce5ba3a1bb06aee950" => :el_capitan
-    sha256 "97b2e9cc807535b2b9776924cf7278bce30f5c4e06c02047a2d98dd6538dd95c" => :yosemite
-    sha256 "765d2ec7e4f597f3f022235f96d67b0ce714b727af79a0b8a085ec0cca042567" => :mavericks
+    sha256 "45e25bc07de1dde58b90b45c5af8988e4cbf4a4f1208c8ed5067d0d81f58b630" => :el_capitan
+    sha256 "dced3844d85fb2da818606a69a7818a6ab538bf301395b66ed8f09dc12fe8c0b" => :yosemite
+    sha256 "33fc83a43eba0477bccccf32735d21c06fa81afeb611cd8868242d5753458e3c" => :mavericks
   end
 
   depends_on "pkg-config" => :build

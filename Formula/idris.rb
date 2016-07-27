@@ -5,42 +5,28 @@ class Idris < Formula
 
   desc "Pure functional programming language with dependent types"
   homepage "http://www.idris-lang.org"
-  url "https://github.com/idris-lang/Idris-dev/archive/v0.11.2.tar.gz"
-  sha256 "eddc8d8d6401d5c5743df43003a11d031be42eb6b09800dc1111606c39a3c8bc"
-  revision 1
+  url "https://github.com/idris-lang/Idris-dev/archive/v0.12.1.tar.gz"
+  sha256 "c3cabf16fcfad69f3d13e24e3426fd2335378a38387c69ceaeedd9cbf741f41b"
   head "https://github.com/idris-lang/Idris-dev.git"
 
   bottle do
-    sha256 "ef4de83fa2e754bc7730a6e79e4e7be548e47713790573804465ec84ef6b96de" => :el_capitan
-    sha256 "233838359600772f282b90030147b6cdb78ebceb95a7c7c85e9a0b81d8413ac5" => :yosemite
-    sha256 "0f949e2fd727d9c73575c6ea002048057440472fc916435ee542232461ea2485" => :mavericks
+    sha256 "88cb9901636a96b2800cb2e4145b2e2b729ec3963e441971609dd12d94a3253b" => :el_capitan
+    sha256 "4f4f9d9be799412a7219bfe9363d915d22e5e953ed812aa8dc1ae8cecf4961fd" => :yosemite
+    sha256 "bfaf0e0814007947916c3edd2187034dd23c7628341f096e97a8b8ec4088e820" => :mavericks
   end
 
-  depends_on "haskell-stack" => :build
+  depends_on "ghc" => :build
+  depends_on "cabal-install" => :build
   depends_on "pkg-config" => :build
+
   depends_on "gmp"
-  depends_on "libffi"
+  depends_on "libffi" => :recommended
 
   def install
-    ENV["STACK_ROOT"] = "#{HOMEBREW_CACHE}/stack_root"
-    (libexec/"stack").install Dir["#{buildpath}/*"]
-
-    cd libexec/"stack" do
-      system "stack", "setup"
-      system "stack", "build"
-
-      bin.mkpath
-      system "stack", "install", "--local-bin-path=#{bin}"
-
-      install_dir = Utils.popen_read("stack", "path", "--local-install-root").chomp
-
-      share.mkpath
-      mv "#{install_dir}/share/man", share
-      mv "#{install_dir}/doc", share
-
-      libexec.install_symlink "#{install_dir}/lib"
-      libexec.install_symlink "#{install_dir}/share"
-    end
+    args = []
+    args << "-f FFI" if build.with? "libffi"
+    args << "-f release" if build.stable?
+    install_cabal_package *args
   end
 
   test do
@@ -50,18 +36,20 @@ class Idris < Formula
       main = putStrLn "Hello, Homebrew!"
     EOS
 
-    (testpath/"ffi.idr").write <<-EOS.undent
-      module Main
-      puts: String -> IO ()
-      puts x = foreign FFI_C "puts" (String -> IO ()) x
+    system bin/"idris", "hello.idr", "-o", "hello"
+    assert_equal "Hello, Homebrew!", shell_output("./hello").chomp
 
-      main : IO ()
-      main = puts "Hello, interpreter!"
-    EOS
-    system bin/"idris", testpath/"hello.idr", "-o", testpath/"hello"
-    assert_match /Hello, Homebrew!/, shell_output(testpath/"hello")
+    if build.with? "libffi"
+      (testpath/"ffi.idr").write <<-EOS.undent
+        module Main
+        puts: String -> IO ()
+        puts x = foreign FFI_C "puts" (String -> IO ()) x
+        main : IO ()
+        main = puts "Hello, interpreter!"
+      EOS
 
-    system bin/"idris", testpath/"ffi.idr", "-o", testpath/"ffi"
-    assert_match /Hello, interpreter!/, shell_output(testpath/"ffi")
+      system bin/"idris", "ffi.idr", "-o", "ffi"
+      assert_equal "Hello, interpreter!", shell_output("./ffi").chomp
+    end
   end
 end

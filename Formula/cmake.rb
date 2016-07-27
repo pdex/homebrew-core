@@ -1,22 +1,16 @@
 class Cmake < Formula
   desc "Cross-platform make"
   homepage "https://www.cmake.org/"
-  url "https://cmake.org/files/v3.5/cmake-3.5.2.tar.gz"
-  sha256 "92d8410d3d981bb881dfff2aed466da55a58d34c7390d50449aa59b32bb5e62a"
+  url "https://cmake.org/files/v3.6/cmake-3.6.1.tar.gz"
+  sha256 "28ee98ec40427d41a45673847db7a905b59ce9243bb866eaf59dce0f58aaef11"
 
   head "https://cmake.org/cmake.git"
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "addda85812b6af991011cb6c5e640a2fe25e6b60415931e1c5a76ce2675c2988" => :el_capitan
-    sha256 "4888f6163be1b5e4affaa5ebe4b118d64b1b81bbc92cea884803bf098d9e9cc0" => :yosemite
-    sha256 "b1f3d72e7ee352da96a577638b3abda8aa9f894b5ecf91350667f89821bf7304" => :mavericks
-  end
-
-  devel do
-    url "https://cmake.org/files/v3.6/cmake-3.6.0-rc1.tar.gz"
-    sha256 "2b83faac94c6421b02546ea2728f05568bfdb7ba7961102ecfb6c583fe889027"
+    sha256 "c2dd35936fd86bf1a17173e874dc8a1eb0bcc3a540b445473c7eaea0d62e7fac" => :el_capitan
+    sha256 "4666f51505837370e477d7762f4d6439a4f3637f945cccf6bc2542feb11ba9e8" => :yosemite
+    sha256 "3908d65e9ff688489bb23ce1b9d13330eda6b57a73dc34402742a637f649dd6a" => :mavericks
   end
 
   option "without-docs", "Don't build man pages"
@@ -26,7 +20,7 @@ class Cmake < Formula
 
   # The `with-qt` GUI option was removed due to circular dependencies if
   # CMake is built with Qt support and Qt is built with MySQL support as MySQL uses CMake.
-  # For the GUI application please instead use brew install caskroom/cask/cmake.
+  # For the GUI application please instead use `brew cask install cmake`.
 
   def install
     args = %W[
@@ -40,7 +34,7 @@ class Cmake < Formula
       --system-bzip2
     ]
 
-    # https://github.com/Homebrew/homebrew/issues/45989
+    # https://github.com/Homebrew/legacy-homebrew/issues/45989
     if MacOS.version <= :lion
       args << "--no-system-curl"
     else
@@ -64,11 +58,11 @@ class Cmake < Formula
       end
     end
 
-    (share/"emacs/site-lisp/cmake").install "Auxiliary/cmake-mode.el"
+    elisp.install "Auxiliary/cmake-mode.el"
   end
 
   test do
     (testpath/"CMakeLists.txt").write("find_package(Ruby)")
-    system "#{bin}/cmake", "."
+    system bin/"cmake", "."
   end
 end

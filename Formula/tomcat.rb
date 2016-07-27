@@ -3,31 +3,31 @@ class Tomcat < Formula
   homepage "https://tomcat.apache.org/"
 
   stable do
-    url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.35/bin/apache-tomcat-8.0.35.tar.gz"
-    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.35/bin/apache-tomcat-8.0.35.tar.gz"
-    sha256 "6bc380aeebe0b56cf9b37b8c3c128919d2e8ac84d756448fc8e9d8af122f88fd"
+    url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.5.4/bin/apache-tomcat-8.5.4.tar.gz"
+    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.4/bin/apache-tomcat-8.5.4.tar.gz"
+    sha256 "155cf7f09e13c63b8301ddc8c37d90be64bc3d5e9ddf163c4f10a6406a49a191"
 
     depends_on :java => "1.7+"
 
     resource "fulldocs" do
-      url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.35/bin/apache-tomcat-8.0.35-fulldocs.tar.gz"
-      mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.35/bin/apache-tomcat-8.0.35-fulldocs.tar.gz"
-      version "8.0.35"
-      sha256 "572e91559b7ade53f69ef5d0277db19717c672963ef10b719b8f4b7cd2c79ccf"
+      url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.5.4/bin/apache-tomcat-8.5.4-fulldocs.tar.gz"
+      mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.4/bin/apache-tomcat-8.5.4-fulldocs.tar.gz"
+      version "8.5.4"
+      sha256 "3971b2c802860e3eb7902136cb421c953bb87c42fb510b0dcf65d604129453d2"
     end
   end
 
   devel do
-    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.0.M6/bin/apache-tomcat-9.0.0.M6.tar.gz"
-    version "9.0.0.M6"
-    sha256 "5a58d6454a3ef27a464ab090e82aca7a94f4525524ef4163fa500b9e49d5d42c"
+    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.0.M9/bin/apache-tomcat-9.0.0.M9.tar.gz"
+    version "9.0.0.M9"
+    sha256 "aaeaebf271dd5c92c9aba808fb2efd1e32bc8cad01d13214fa0f3b594dece7fc"
 
     depends_on :java => "1.8+"
 
     resource "fulldocs" do
-      url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.0.M6/bin/apache-tomcat-9.0.0.M6-fulldocs.tar.gz"
-      version "9.0.0.M6"
-      sha256 "4e34b6255231a052acc31b8d2c4679c5328d9ed8b7be1f28199b5147ad82d9bd"
+      url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.0.M9/bin/apache-tomcat-9.0.0.M9-fulldocs.tar.gz"
+      version "9.0.0.M9"
+      sha256 "745e17f9715f4dc5ecefccf74135b4614efe859f334dafec94a5fb456b0ec43f"
     end
   end
 
@@ -40,7 +40,7 @@ class Tomcat < Formula
     rm_rf Dir["bin/*.bat"]
 
     # Install files
-    prefix.install %w[ NOTICE LICENSE RELEASE-NOTES RUNNING.txt ]
+    prefix.install %w[NOTICE LICENSE RELEASE-NOTES RUNNING.txt]
     libexec.install Dir["*"]
     bin.install_symlink "#{libexec}/bin/catalina.sh" => "catalina"
 

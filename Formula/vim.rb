@@ -2,12 +2,15 @@ class Vim < Formula
   desc "Vi \"workalike\" with many additional features"
   homepage "http://www.vim.org/"
   # *** Vim should be updated no more than once every 7 days ***
-  url "https://github.com/vim/vim/archive/v7.4.1910.tar.gz"
-  sha256 "bc0dc553a80b474fafd1fd09df427d9e089fd5ecbaa2ca36ab92f100e37cb48f"
-
+  url "https://github.com/vim/vim/archive/v7.4.2085.tar.gz"
+  sha256 "483777e369fbd320351db7c7d827ba5cbbf60287b6028803ad3e572636298fa8"
   head "https://github.com/vim/vim.git"
 
-  bottle :disable, "To use the user's Python."
+  bottle do
+    sha256 "cb66e6c259801f8a6531abd31ccdf746161880053d20064a08a8830e08ffa5a6" => :el_capitan
+    sha256 "284f75545ff63c9ad5f5206c4ef2831785305dbf1e214388102d179ff09e6af2" => :yosemite
+    sha256 "dded7d6280ecb385200578215b896432507149f3923189d68a63c89120a7eca1" => :mavericks
+  end
 
   deprecated_option "disable-nls" => "without-nls"
   deprecated_option "override-system-vi" => "with-override-system-vi"
@@ -16,8 +19,14 @@ class Vim < Formula
   option "without-nls", "Build vim without National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
 
-  LANGUAGES_OPTIONAL = %w[lua mzscheme python3 tcl]
-  LANGUAGES_DEFAULT  = %w[perl python ruby]
+  LANGUAGES_OPTIONAL = %w[lua mzscheme python3 tcl].freeze
+  LANGUAGES_DEFAULT  = %w[perl python ruby].freeze
+
+  if MacOS.version >= :mavericks
+    option "with-custom-python", "Build with a custom Python 2 instead of the Homebrew version."
+    option "with-custom-ruby", "Build with a custom Ruby instead of the Homebrew version."
+    option "with-custom-perl", "Build with a custom Perl instead of the Homebrew version."
+  end
 
   option "with-python3", "Build vim with python3 instead of python[2] support"
   LANGUAGES_OPTIONAL.each do |language|

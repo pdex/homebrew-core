@@ -1,16 +1,15 @@
 class AppscaleTools < Formula
   desc "Command-line tools for working with AppScale"
   homepage "https://github.com/AppScale/appscale-tools"
-  url "https://github.com/AppScale/appscale-tools/archive/2.8.0.tar.gz"
-  sha256 "f77d50e850d7930ebd91c494b549e54d392953a831a5cb4e4e21c7c30a486217"
+  url "https://github.com/AppScale/appscale-tools/archive/3.0.0.tar.gz"
+  sha256 "3b9af636c342d6435ade76e1892e97aa3411c89eb3e6af0ca0eeab818dfc9ba3"
   head "https://github.com/AppScale/appscale-tools.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "8b05c910595d633a392525eb373b561fd941bef0bb9e11aa4f0f959a216f6d63" => :el_capitan
-    sha256 "4a8f22151945329a56b2224c1726d6e3808ce1dfd4c79c68e188c69b32243f94" => :yosemite
-    sha256 "774d97a236e336fc252d59ef3bead54990a696931b8f7e4337d39b8ac51c9b88" => :mavericks
+    sha256 "3d1d9ed39a5df61461f6400113e3b60e38abb396c8087cc82609dda357abf340" => :el_capitan
+    sha256 "52662ddea86b5d6bae4e95187c86ecb50ce212785d039ea996a164ce7e498b96" => :yosemite
+    sha256 "eff62d8c145f8542027e21e473a90544422c5ec7acce6c675288772857d33eec" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -102,8 +101,12 @@ class AppscaleTools < Formula
       end
     end
 
-    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    site_packages = libexec/"lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", site_packages
     system "python", *Language::Python.setup_install_args(libexec)
+
+    # appscale is a namespace package
+    touch site_packages/"appscale/__init__.py"
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])

@@ -4,16 +4,16 @@ class Imagemagick < Formula
   # Please always keep the Homebrew mirror as the primary URL as the
   # ImageMagick site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
-  url "https://dl.bintray.com/homebrew/mirror/imagemagick-6.9.4-8.tar.xz"
-  mirror "https://www.imagemagick.org/download/ImageMagick-6.9.4-8.tar.xz"
-  sha256 "e3ccf5c04dea6db1c67023aacd5235653d0c4bdc3f9d60883bce6a065da21ce8"
+  url "https://dl.bintray.com/homebrew/mirror/imagemagick-6.9.5-3.tar.xz"
+  mirror "https://www.imagemagick.org/download/ImageMagick-6.9.5-3.tar.xz"
+  sha256 "6fec9f493bb7434b8c143eb3bba86f3892c68e0b6633ce7eeed970d47c5db4ec"
 
   head "http://git.imagemagick.org/repos/ImageMagick.git"
 
   bottle do
-    sha256 "b17026beccc9c6db282afa5c620d2e047a22d8982d30350556c2e47b025d91e1" => :el_capitan
-    sha256 "ec81c2a93c7c3b5109cb215512945bbe555aa2797cd705bd380f25f1a18b4737" => :yosemite
-    sha256 "1808cb4f64e54aa6502a64c02cea046eedc9fd62f5752accf361a14536950c6c" => :mavericks
+    sha256 "a278197bdc894283d3e015aa638082e607c09922e4b0bed5e64f193c8cd40b1c" => :el_capitan
+    sha256 "5e8b096ed56f5acb285405cf1782f22656916f093ecf62f904db412163b18681" => :yosemite
+    sha256 "ec9bbb8d2bfa7a01d4cbda33c2f7dbe4046edb84686bbb54f792bb963bcca8ca" => :mavericks
   end
 
   deprecated_option "enable-hdri" => "with-hdri"
@@ -28,6 +28,9 @@ class Imagemagick < Formula
   option "with-quantum-depth-32", "Compile with a quantum depth of 32 bit"
   option "without-opencl", "Disable OpenCL"
   option "without-magick-plus-plus", "disable build/install of Magick++"
+  option "without-modules", "Disable support for dynamically loadable modules"
+  option "without-threads", "Disable threads support"
+  option "with-zero-configuration", "Disables depending on XML configuration files"
 
   depends_on "xz"
   depends_on "libtool" => :run
@@ -64,9 +67,14 @@ class Imagemagick < Formula
       --disable-dependency-tracking
       --disable-silent-rules
       --enable-shared
-      --disable-static
-      --with-modules
+      --enable-static
     ]
+
+    if build.without? "modules"
+      args << "--without-modules"
+    else
+      args << "--with-modules"
+    end
 
     if build.with? "openmp"
       args << "--enable-openmp"
@@ -81,6 +89,7 @@ class Imagemagick < Formula
     args << "--enable-hdri=yes" if build.with? "hdri"
     args << "--enable-fftw=yes" if build.with? "fftw"
     args << "--without-pango" if build.without? "pango"
+    args << "--without-threads" if build.without? "threads"
 
     if build.with? "quantum-depth-32"
       quantum_depth = 32
@@ -102,6 +111,7 @@ class Imagemagick < Formula
     args << "--with-fontconfig=yes" if build.with? "fontconfig"
     args << "--with-freetype=yes" if build.with? "freetype"
     args << "--with-webp=yes" if build.with? "webp"
+    args << "--enable-zero-configuration" if build.with? "zero-configuration"
 
     # versioned stuff in main tree is pointless for us
     inreplace "configure", "${PACKAGE_NAME}-${PACKAGE_VERSION}", "${PACKAGE_NAME}"

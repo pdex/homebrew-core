@@ -1,13 +1,13 @@
 class Gradle < Formula
   desc "Build system based on the Groovy language"
   homepage "https://www.gradle.org/"
-  url "https://downloads.gradle.org/distributions/gradle-2.13-bin.zip"
-  sha256 "0f665ec6a5a67865faf7ba0d825afb19c26705ea0597cec80dd191b0f2cbb664"
+  url "https://downloads.gradle.org/distributions/gradle-2.14.1-bin.zip"
+  sha256 "cfc61eda71f2d12a572822644ce13d2919407595c2aec3e3566d2aab6f97ef39"
 
   devel do
-    url "https://downloads.gradle.org/distributions/gradle-2.14-rc-5-bin.zip"
-    sha256 "dcdd1021345cfabd2c06a345700afe537bde5478cfb8c3ac59d6348eeb0647e9"
-    version "2.14-rc-5"
+    url "https://downloads.gradle.org/distributions/gradle-3.0-milestone-2-bin.zip"
+    sha256 "5c3e8e9a38c92ae85e05df609c6c1b6f51e5a08b39a26d61bd8a7044268135e7"
+    version "3.0-milestone-2"
   end
 
   bottle :unneeded
@@ -16,11 +16,11 @@ class Gradle < Formula
 
   def install
     libexec.install %w[bin lib]
-    bin.install_symlink libexec+"bin/gradle"
+    bin.install_symlink libexec/"bin/gradle"
   end
 
   test do
     ENV.java_cache
-    assert_match(/Gradle #{version}/, shell_output("#{bin}/gradle --version"))
+    assert_match version.to_s, shell_output("#{bin}/gradle --version")
   end
 end

@@ -1,8 +1,8 @@
 class Pyenv < Formula
   desc "Python version management"
   homepage "https://github.com/yyuu/pyenv"
-  url "https://github.com/yyuu/pyenv/archive/v20160509.tar.gz"
-  sha256 "84e63e1fa4e25a8b4c737d35a1af4c769e8ea12fdeb1bb2dc82f0f567e0f5a20"
+  url "https://github.com/yyuu/pyenv/archive/v20160726.tar.gz"
+  sha256 "297040445f25912bea030be91b7d46c65eedbdf60655c2aae6226e88ed9b1346"
   head "https://github.com/yyuu/pyenv.git"
 
   bottle :unneeded

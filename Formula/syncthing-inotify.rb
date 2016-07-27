@@ -1,38 +1,29 @@
-require "language/go"
-
 class SyncthingInotify < Formula
   desc "File watcher intended for use with Syncthing"
   homepage "https://github.com/syncthing/syncthing-inotify"
-  url "https://github.com/syncthing/syncthing-inotify/archive/v0.8.tar.gz"
-  sha256 "886f38fa4b62ef58d54cfa379a1de7e9c461a0ff14149497934fa654e73c946a"
-
+  url "https://github.com/syncthing/syncthing-inotify/archive/v0.8.3.tar.gz"
+  sha256 "3bbcce6788b44019472205c000bed2b3255a2ee08c0d20a93a9e7b22c73f3d45"
   head "https://github.com/syncthing/syncthing-inotify.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7537c6837dc710bfa679600875d6a8027dce8a1314e25fad19d51c16d9dc2284" => :el_capitan
-    sha256 "b4251c1b4761aa939bb31067a36d971ee5861b38175195e46f4a765da3afb0f2" => :yosemite
-    sha256 "02786d3f432567c9250b19967bd61efdb190d129e107f990b7db501db8de9d81" => :mavericks
+    sha256 "1ac1dcf264f1969ca962acaf0e486b356f51a791845f56f07116cd6f880f88f0" => :el_capitan
+    sha256 "dd038217ba9dbda2d7e1626e63f144ca66a36b19b6b726bc33502286b33b9755" => :yosemite
+    sha256 "960a018f4daa6174e9f8205055bbe6a41addd172fb3e4e7675ad17b9eb6ea26d" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/cenkalti/backoff" do
-    url "https://github.com/cenkalti/backoff.git",
-      :revision => "32cd0c5b3aef12c76ed64aaf678f6c79736be7dc"
-  end
-
-  go_resource "github.com/zillode/notify" do
-    url "https://github.com/Zillode/notify.git",
-      :revision => "2da5cc9881e8f16bab76b63129c7781898f97d16"
-  end
+  depends_on "godep" => :build
 
   def install
     ENV["GOPATH"] = buildpath
-    bin_name = "syncthing-inotify"
-    Language::Go.stage_deps resources, buildpath/"src"
-    system "go", "build", "-ldflags", "-w -X main.Version #{version}", "-o", bin_name
-    bin.install bin_name
+    dir = buildpath/"src/github.com/syncthing/syncthing-inotify"
+    dir.install buildpath.children
+    cd dir do
+      system "godep", "restore"
+      system "go", "build", "-ldflags", "-w -X main.Version=#{version}"
+      bin.install name
+    end
   end
 
   plist_options :manual => "syncthing-inotify"

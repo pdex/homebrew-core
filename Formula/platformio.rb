@@ -1,14 +1,14 @@
 class Platformio < Formula
   desc "Ecosystem for IoT development (Arduino and ARM mbed compatible)"
   homepage "http://platformio.org"
-  url "https://pypi.python.org/packages/4e/29/49972bac9706a618a58a396746a2004aa13f0540c68fc3bf411b17867b41/platformio-2.9.4.tar.gz"
-  sha256 "3bef1e5f5c67aeef746a463db213af2d55ec355a6ac6da9735b5b8e701790217"
+  url "https://pypi.python.org/packages/31/d9/9d06e2b531028772650dc3a79dd770fcc12e1265d877b9de0ad455217f1c/platformio-2.11.1.tar.gz"
+  sha256 "26e64cf0aed9fef2b6a7be6e907a0f347885b7610da80244c6fc63e72671ab89"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "a9f4dc2839231bdcacb8547b352fb7784d5c293a5ea3572d65919f630a677a1e" => :el_capitan
-    sha256 "0a18466995d4ea24f26fa6192668b61e8ee9dddc238ad25a73f378e3cf774e96" => :yosemite
-    sha256 "7526cba62d40cee5a22db8434c807f1551fd44b0ecbefef6854e51ef4c8c7c14" => :mavericks
+    sha256 "1b5b172485d5d92e3b2fd08e12e741349596d836d02b73a942e326186492e60c" => :el_capitan
+    sha256 "0d4d3e716581c182b359c335a84ca78108966201471f887521509d4a725ff904" => :yosemite
+    sha256 "e7280607c3291ce34ae4ff451183bc5ba2544995e85e4847d0c186420edaaff2" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -34,8 +34,8 @@ class Platformio < Formula
   end
 
   resource "pyserial" do
-    url "https://pypi.python.org/packages/ce/9c/694ce79a9d4a164e109aeba1a40fba23336f3b7554978553e22a5d41d54d/pyserial-3.1.tar.gz"
-    sha256 "c8ffdcbd8bfd308842409e558848c32aa3499a1bfe95a591e4210072b9520f1e"
+    url "https://pypi.python.org/packages/3c/d8/a9fa247ca60b02b3bebbd61766b4f321393b57b13c53b18f6f62cf172c08/pyserial-3.1.1.tar.gz"
+    sha256 "d657051249ce3cbd0446bcfb2be07a435e1029da4d63f53ed9b4cdde7373364c"
   end
 
   resource "requests" do
